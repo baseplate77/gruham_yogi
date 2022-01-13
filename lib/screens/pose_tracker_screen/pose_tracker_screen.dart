@@ -13,7 +13,9 @@ class PoseTrackerScreen extends StatefulWidget {
 }
 
 class _PoseTrackerScreenState extends State<PoseTrackerScreen> {
-  PoseDetector poseDetector = GoogleMlKit.vision.poseDetector();
+  PoseDetector poseDetector = GoogleMlKit.vision.poseDetector(
+      poseDetectorOptions:
+          PoseDetectorOptions(model: PoseDetectionModel.accurate));
   bool isBusy = false;
   CustomPaint? customPaint;
 

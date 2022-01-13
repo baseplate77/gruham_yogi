@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gruham_yogi/screens/home_screen/home_screen.dart';
 
 import 'core/theme/app_theme.dart';
 import 'screens/login_screen/login_screen.dart';
@@ -24,10 +25,13 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
         designSize: const Size(428, 926),
         builder: () {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: AppTheme.light(),
-            home: const LoginScreen(),
+          return DefaultTabController(
+            length: 4,
+            child: MaterialApp(
+              title: 'Flutter Demo',
+              theme: AppTheme.light(),
+              home: const HomeScreen(),
+            ),
           );
         });
   }
