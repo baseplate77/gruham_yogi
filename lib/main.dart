@@ -1,10 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gruham_yogi/core/ml/posenet_model.dart';
-// import 'dart:ffi';
 
-import 'core/ml/classifier.dart';
+import 'core/ml/posenet_model.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/home_screen/home_screen.dart';
 import 'screens/pose_tracker_screen/widgets/camera_preview.dart';

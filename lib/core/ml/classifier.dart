@@ -92,4 +92,6 @@ class Classifer {
     // print("**** class index : $temp_max_idx");
     return _yogaPose[temp_max_idx];
   }
+
+  poseAnlysis() {}
 }

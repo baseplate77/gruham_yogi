@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:gruham_yogi/core/ml/analysis_algorithm.dart';
 
 import '../../core/ml/classifier.dart';
 import '../../core/utils/angle_calculator.dart';
@@ -64,12 +65,15 @@ class _PoseTrackerScreenState extends State<PoseTrackerScreen> {
     final DateTime t2 = DateTime.now();
 
     // angle calculation process
-    if (poses.isNotEmpty) {
-      final output = angleCalculator(poses[0].landmarks);
-      poseName = _classifer.classify(output);
+    // if (poses.isNotEmpty) {
+    //   // final output = angleCalculator(poses[0].landmarks);
+    //   final wrongAngle = analysisPose(poses[0].landmarks);
+    //   print("TOTAL WRONG ANGLE : ${wrongAngle.length}");
+    //   print("WRONG POSE ANGLE : $wrongAngle");
+    //   // poseName = _classifer.classify(output);
 
-      //rint("output is here : $normed_output");
-    }
+    //   //rint("output is here : $normed_output");
+    // }
 
     debugPrint(
         'Found ${poses.length} poses With latent : ${t2.difference(t1).inMilliseconds} mms');
@@ -77,8 +81,14 @@ class _PoseTrackerScreenState extends State<PoseTrackerScreen> {
         inputImage.inputImageData?.imageRotation != null &&
         poses.isNotEmpty) {
       // logic for checking to if the joint angle comes in the standared close to standared angle
+      final wrongAngle = analysisPose(poses[0].landmarks);
+      print("TOTAL WRONG ANGLE : ${wrongAngle.length}");
+      print("WRONG POSE ANGLE : $wrongAngle");
+
+      // print("image size : ${inputImage.inputImageData!.size}");
+
       final painter = PosePainter(poses, inputImage.inputImageData!.size,
-          inputImage.inputImageData!.imageRotation);
+          inputImage.inputImageData!.imageRotation, wrongAngle);
       customPaint = CustomPaint(painter: painter);
     } else {
       customPaint = null;

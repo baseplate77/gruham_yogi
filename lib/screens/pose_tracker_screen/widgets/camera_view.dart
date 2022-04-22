@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:gruham_yogi/core/utils/ui_constant.dart';
 
@@ -201,8 +203,9 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     final camera = cameras[_cameraIndex];
     _controller = CameraController(
       camera,
-      ResolutionPreset.high,
+      ResolutionPreset.low,
       enableAudio: false,
+      imageFormatGroup: ImageFormatGroup.bgra8888,
     );
     _controller?.initialize().then((_) {
       if (!mounted) {
@@ -241,7 +244,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       allBytes.putUint8List(plane.bytes);
     }
     final bytes = allBytes.done().buffer.asUint8List();
-
     final Size imageSize =
         Size(image.width.toDouble(), image.height.toDouble());
 
@@ -250,9 +252,11 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
         InputImageRotationMethods.fromRawValue(camera.sensorOrientation) ??
             InputImageRotation.Rotation_0deg;
 
+    print("inputImageFormat : ${image.format.raw}");
+
     final inputImageFormat =
         InputImageFormatMethods.fromRawValue(image.format.raw) ??
-            InputImageFormat.NV21;
+            InputImageFormat.BGRA8888;
 
     final planeData = image.planes.map(
       (Plane plane) {
@@ -270,6 +274,12 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       inputImageFormat: inputImageFormat,
       planeData: planeData,
     );
+    // Uint8List? compressBytes = await FlutterImageCompress.compressWithList(
+    //   bytes,
+    //   minHeight: imageSize.height.toInt(),
+    //   minWidth: imageSize.width.toInt(),
+    //   quality: 80,
+    // );
 
     final inputImage =
         InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
