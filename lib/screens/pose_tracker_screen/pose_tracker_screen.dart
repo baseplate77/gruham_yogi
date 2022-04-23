@@ -81,14 +81,16 @@ class _PoseTrackerScreenState extends State<PoseTrackerScreen> {
         inputImage.inputImageData?.imageRotation != null &&
         poses.isNotEmpty) {
       // logic for checking to if the joint angle comes in the standared close to standared angle
-      final wrongAngle = analysisPose(poses[0].landmarks);
+      final output = analysisPose(poses[0].landmarks);
+      final wrongAngle = output[0];
+      poseName = _classifer.classify(output[1] as List<double>);
       print("TOTAL WRONG ANGLE : ${wrongAngle.length}");
       print("WRONG POSE ANGLE : $wrongAngle");
 
       // print("image size : ${inputImage.inputImageData!.size}");
 
       final painter = PosePainter(poses, inputImage.inputImageData!.size,
-          inputImage.inputImageData!.imageRotation, wrongAngle);
+          inputImage.inputImageData!.imageRotation, wrongAngle as List<int>);
       customPaint = CustomPaint(painter: painter);
     } else {
       customPaint = null;

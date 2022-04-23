@@ -85,13 +85,17 @@ class PosePainter extends CustomPainter {
       //   }
       // });
 
-      void paintLine(
-          PoseLandmarkType type1, PoseLandmarkType type2, Paint paintType) {
+      void paintLine(PoseLandmarkType type1, PoseLandmarkType type2,
+          Paint paintType, int id) {
         PoseLandmark joint1 = pose.landmarks[type1]!;
         PoseLandmark joint2 = pose.landmarks[type2]!;
         // Draw only if both joint are above threshold
         if (joint1.likelihood > drawLineThreshold &&
             joint2.likelihood > drawLineThreshold) {
+          if (wrongPose.contains(id)) {
+            paintType.color = wrongColor;
+          }
+
           canvas.drawLine(
               Offset(translateX(joint1.x, rotation, size, absoluteImageSize),
                   translateY(joint1.y, rotation, size, absoluteImageSize)),
@@ -128,25 +132,26 @@ class PosePainter extends CustomPainter {
 
       //Draw arms
       paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftElbow,
-          leftArmPaint);
-      paintLine(
-          PoseLandmarkType.leftElbow, PoseLandmarkType.leftWrist, leftArmPaint);
+          leftArmPaint, 0);
+      paintLine(PoseLandmarkType.leftElbow, PoseLandmarkType.leftWrist,
+          leftArmPaint, 0);
 
       paintLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightElbow,
-          rightArmPaint);
+          rightArmPaint, 1);
       paintLine(PoseLandmarkType.rightElbow, PoseLandmarkType.rightWrist,
-          rightArmPaint);
+          rightArmPaint, 1);
 
       //Draw Body
       paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.rightShoulder,
-          shoulderPaint);
+          shoulderPaint, -99);
 
-      paintLine(PoseLandmarkType.leftHip, PoseLandmarkType.rightHip, hipPaint);
+      paintLine(
+          PoseLandmarkType.leftHip, PoseLandmarkType.rightHip, hipPaint, -99);
 
       paintLine(PoseLandmarkType.leftShoulder, PoseLandmarkType.leftHip,
-          leftShouldlerHipPaint);
+          leftShouldlerHipPaint, -99);
       paintLine(PoseLandmarkType.rightShoulder, PoseLandmarkType.rightHip,
-          rightShoulderHipPaint);
+          rightShoulderHipPaint, -7);
       // drawLineFromMidPoint(
       //     PoseLandmarkType.leftShoulder,
       //     PoseLandmarkType.rightShoulder,
@@ -165,14 +170,14 @@ class PosePainter extends CustomPainter {
       //Draw legs
       // leftLegPaint.color = wrongColor;
       paintLine(
-          PoseLandmarkType.leftHip, PoseLandmarkType.leftKnee, leftLegPaint);
-      paintLine(
-          PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle, leftLegPaint);
+          PoseLandmarkType.leftHip, PoseLandmarkType.leftKnee, leftLegPaint, 8);
+      paintLine(PoseLandmarkType.leftKnee, PoseLandmarkType.leftAnkle,
+          leftLegPaint, 8);
 
-      paintLine(
-          PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee, rightLegPaint);
+      paintLine(PoseLandmarkType.rightHip, PoseLandmarkType.rightKnee,
+          rightLegPaint, 9);
       paintLine(PoseLandmarkType.rightKnee, PoseLandmarkType.rightAnkle,
-          rightLegPaint);
+          rightLegPaint, 9);
     }
   }
 

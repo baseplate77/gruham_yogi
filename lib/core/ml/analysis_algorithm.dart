@@ -18,9 +18,9 @@ List<double> stdWarrior2Angles = [
 ];
 
 // use to check
-int difficultyBuffer = 10;
+int difficultyBuffer = 25;
 
-List<int> analysisPose(
+List<List> analysisPose(
   Map<PoseLandmarkType, PoseLandmark> landmark,
 ) {
   // List<List<PoseLandmarkType>> wrongPoseLandmark = [];
@@ -36,7 +36,7 @@ List<int> analysisPose(
     }
   }
 
-  return wrongPoseLandmark;
+  return [wrongPoseLandmark, poseAngles];
 }
 
 // List<List<PoseLandmarkType>> jointsAngleLandmarks = [
